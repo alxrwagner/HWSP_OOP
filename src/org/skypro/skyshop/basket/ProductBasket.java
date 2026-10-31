@@ -76,16 +76,21 @@ public class ProductBasket {
     //Печать содержимого корзины с несколькими товарами
     public void showAllProductsInBasket(){
         boolean isEmpty = true;
+        int specialProductCounter = 0;
         for (Product product : products){
             if (product != null){
                 System.out.println(product);
+                if (product.getIsSpecial()){
+                    specialProductCounter++;
+                }
                 isEmpty = false;
             }
         }
         if (isEmpty){
             System.out.println("Корзина пуста");
         }
-        System.out.println("Итого: " + totalCost());
+        System.out.println("Итого: " + totalCost() +
+                " \nСпециальных товаров: " + specialProductCounter);
     }
 
     //Увеличение объема корзины
