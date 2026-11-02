@@ -12,11 +12,9 @@ public abstract class Product {
         return title;
     }
 
-    public abstract int getCost();
+    public abstract int getPrice();
 
-    public boolean getIsSpecial(){
-        return isSpecial;
-    }
+    public abstract boolean getIsSpecial();
 
     @Override
     public String toString() {

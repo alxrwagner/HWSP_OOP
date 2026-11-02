@@ -37,7 +37,7 @@ public class ProductBasket {
         boolean isEmpty = true;
         for (Product product : products){
             if (product != null){
-                totalCost += product.getCost();
+                totalCost += product.getPrice();
                 isEmpty = false;
             }
         }
