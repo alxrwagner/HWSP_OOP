@@ -1,7 +1,10 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -11,10 +14,10 @@ public class Main {
         ProductBasket basket = new ProductBasket();
 
         //Создание продукта
-        Product product1 = new Product("Хлеб", 45);
-        Product product2 = new Product("Масло", 550);
-        Product product3 = new Product("Сметана", 120);
-        Product product4 = new Product("Соль", 85);
+        SimpleProduct product1 = new SimpleProduct("Хлеб", 45);
+        FixPriceProduct product2 = new FixPriceProduct("Масло");
+        DiscountedProduct product3 = new DiscountedProduct("Сметана", 120, 5);
+        SimpleProduct product4 = new SimpleProduct("Соль", 85);
 
         //Добавление продукта в корзину
         basket.addProduct(product1);
