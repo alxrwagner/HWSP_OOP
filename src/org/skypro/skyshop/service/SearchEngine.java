@@ -8,7 +8,7 @@ public class SearchEngine {
     }
 
     public Searchable[] search(String text){
-        Searchable[] result = new Searchable[4];
+        Searchable[] result = new Searchable[5];
         int counter = 0;
 
         for (Searchable obj : searchables) {
