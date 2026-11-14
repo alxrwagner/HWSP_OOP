@@ -15,7 +15,7 @@ public class SearchEngine {
             if (obj != null && obj.getSearchTerm().contains(text)) {
                 result[counter] = obj;
                 counter++;
-                if (counter == 4) {
+                if (counter == searchables.length) {
                     break;
                 }
             }
