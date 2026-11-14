@@ -1,13 +1,15 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.description.Article;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
-import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.service.SearchEngine;
+import org.skypro.skyshop.service.Searchable;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         //Создание корзины
@@ -47,10 +49,47 @@ public class Main {
         //Печать содержимого пустой корзины
         basket.showAllProductsInBasket();
 
-        //Получение стоимости пустой корзины
+        // Получение стоимости пустой корзины
         System.out.println(basket.totalCost());
 
         // Поиск товара по имени в пустой корзине
         System.out.println(basket.checkProductByTitle("Масло"));
+
+        System.out.println("\n--- Тестирование поиска ---");
+
+        // 1. Создаем поисковый движок
+        SearchEngine searchEngine = new SearchEngine(15);
+
+        // 2. Добавляем товары
+        searchEngine.add(product1);
+        searchEngine.add(product2);
+        searchEngine.add(product3);
+        searchEngine.add(product4);
+
+        // 3. Создаем и добавляем статьи
+        Article article1 = new Article("Как выбрать хлеб", "Хлеб должен быть свежим и ароматным.");
+        Article article2 = new Article("Польза масла", "Сливочное масло содержит витамины A и D.");
+        Article article3 = new Article("История сметаны", "Сметана - традиционный славянский продукт.");
+
+        searchEngine.add(article1);
+        searchEngine.add(article2);
+        searchEngine.add(article3);
+
+        // 4. Демонстрация поиска
+        System.out.println("Поиск 'Хлеб':");
+        printSearchResults(searchEngine.search("Хлеб"));
+
+        System.out.println("Поиск 'масло' (с учетом регистра):");
+        printSearchResults(searchEngine.search("масло"));
+
+        System.out.println("Поиск 'продукт':");
+        printSearchResults(searchEngine.search("продукт"));
+
+        System.out.println("Поиск отсутствующего 'Яблоко':");
+        printSearchResults(searchEngine.search("Яблоко"));
+    }
+
+    private static void printSearchResults(Searchable[] results) {
+        System.out.println(Arrays.toString(results));
     }
 }
