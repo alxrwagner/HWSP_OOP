@@ -2,6 +2,7 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.description.Article;
+import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
@@ -14,82 +15,80 @@ public class Main {
     public static void main(String[] args) {
         //Создание корзины
         ProductBasket basket = new ProductBasket();
+        SearchEngine search = new SearchEngine(10);
 
         //Создание продукта
-        SimpleProduct product1 = new SimpleProduct("Хлеб", 45);
+        try {
+            SimpleProduct product1 = new SimpleProduct("   ", 45);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+        try {
+            DiscountedProduct product3 = new DiscountedProduct(null, 120, 110);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            DiscountedProduct product4 = new DiscountedProduct("Молоко", 120, -1);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            SimpleProduct product5 = new SimpleProduct("Соль", 0);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
         FixPriceProduct product2 = new FixPriceProduct("Масло");
-        DiscountedProduct product3 = new DiscountedProduct("Сметана", 120, 5);
-        SimpleProduct product4 = new SimpleProduct("Соль", 85);
 
-        //Добавление продукта в корзину
-        basket.addProduct(product1);
-        basket.addProduct(product2);
-        basket.addProduct(product3);
-        basket.addProduct(product4);
+        //Создаем статьи
+        Article coffeeArticle = new Article(
+                "Как выбрать зерновой кофе",
+                "Хороший кофе начинается со свежей обжарки. Если вы любите насыщенный кофе, обратите внимание на арабику. Настоящий кофе бодрит с утра."
+        );
 
-        //Добавление продукта в корзину, в которой нет свободного места
-        basket.addProduct(product1);
-        basket.addProduct(product1);
+        Article teaArticle = new Article(
+                "Польза зелёного чая",
+                "Зелёный чай содержит антиоксиданты и мягко тонизирует организм без резких скачков давления."
+        );
 
-        //Печать содержимого корзины с несколькими товарами
-        basket.showAllProductsInBasket();
+        Article laptopArticle = new Article(
+                "Обзор игровых ноутбуков 2026 года",
+                "Современный ноутбук должен иметь мощную видеокарту и хорошее охлаждение. Выбирая ноутбук для работы и игр, смотрите на экран."
+        );
 
-        //Подсчет стоимости всех продуктов в корзине
-        System.out.println(basket.totalCost());
+        Article breadArticle = new Article(
+                "Домашний хлеб на закваске",
+                "Выпечка хлеба дома требует терпения, но аромат свежего хлеба стоит потраченного времени."
+        );
 
-        //Поиск товара, который есть в корзине
-        System.out.println(basket.checkProductByTitle("Хлеб"));
+        Article phoneArticle = new Article(
+                "Смартфоны с лучшей камерой",
+                "Флагманские модели позволяют делать отличные снимки даже в темноте."
+        );
 
-        //Поиск товара, которого нет в корзине
-        System.out.println(basket.checkProductByTitle("Йогурт"));
+        //Добавляем статьи в поисковую систему
+        search.add(coffeeArticle);
+        search.add(teaArticle);
+        search.add(laptopArticle);
+        search.add(breadArticle);
+        search.add(phoneArticle);
 
-        //Очистка корзины
-        basket.clearBasket();
+        //Проверка поиска с вхождениями
+        try {
+            System.out.println(search.findBestMatch("на"));
+        } catch (BestResultNotFound e){
+            System.out.println(e.getMessage());
+        }
 
-        //Печать содержимого пустой корзины
-        basket.showAllProductsInBasket();
+        //Проверка поиска без вхождений
+        try {
+            System.out.println(search.findBestMatch("bob"));
+        } catch (BestResultNotFound e){
+            System.out.println(e.getMessage());
+        }
 
-        // Получение стоимости пустой корзины
-        System.out.println(basket.totalCost());
-
-        // Поиск товара по имени в пустой корзине
-        System.out.println(basket.checkProductByTitle("Масло"));
-
-        System.out.println("\n--- Тестирование поиска ---");
-
-        // 1. Создаем поисковый движок
-        SearchEngine searchEngine = new SearchEngine(15);
-
-        // 2. Добавляем товары
-        searchEngine.add(product1);
-        searchEngine.add(product2);
-        searchEngine.add(product3);
-        searchEngine.add(product4);
-
-        // 3. Создаем и добавляем статьи
-        Article article1 = new Article("Как выбрать хлеб", "Хлеб должен быть свежим и ароматным.");
-        Article article2 = new Article("Польза масла", "Сливочное масло содержит витамины A и D.");
-        Article article3 = new Article("История сметаны", "Сметана - традиционный славянский продукт.");
-
-        searchEngine.add(article1);
-        searchEngine.add(article2);
-        searchEngine.add(article3);
-
-        // 4. Демонстрация поиска
-        System.out.println("Поиск 'Хлеб':");
-        printSearchResults(searchEngine.search("Хлеб"));
-
-        System.out.println("Поиск 'масло' (с учетом регистра):");
-        printSearchResults(searchEngine.search("масло"));
-
-        System.out.println("Поиск 'продукт':");
-        printSearchResults(searchEngine.search("продукт"));
-
-        System.out.println("Поиск отсутствующего 'Яблоко':");
-        printSearchResults(searchEngine.search("Яблоко"));
     }
 
-    private static void printSearchResults(Searchable[] results) {
-        System.out.println(Arrays.toString(results));
-    }
 }
