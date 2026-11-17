@@ -2,45 +2,59 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.description.Article;
-import org.skypro.skyshop.exceptions.BestResultNotFound;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.service.SearchEngine;
-import org.skypro.skyshop.service.Searchable;
-
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
         //Создание корзины
         ProductBasket basket = new ProductBasket();
-        SearchEngine search = new SearchEngine(10);
+        SearchEngine search = new SearchEngine();
 
         //Создание продукта
         try {
-            SimpleProduct product1 = new SimpleProduct("   ", 45);
-        } catch (IllegalArgumentException e){
+            SimpleProduct product1 = new SimpleProduct("Сахар", 45);
+            basket.addProduct(product1);
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         try {
-            DiscountedProduct product3 = new DiscountedProduct(null, 120, 110);
-        } catch (IllegalArgumentException e){
+            DiscountedProduct product3 = new DiscountedProduct("Хлеб", 120, 15);
+            basket.addProduct(product3);
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            DiscountedProduct product4 = new DiscountedProduct("Молоко", 120, -1);
-        } catch (IllegalArgumentException e){
+            DiscountedProduct product4 = new DiscountedProduct("Молоко", 120, 20);
+            basket.addProduct(product4);
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            SimpleProduct product5 = new SimpleProduct("Соль", 0);
-        } catch (IllegalArgumentException e){
+            SimpleProduct product5 = new SimpleProduct("Соль", 50);
+            basket.addProduct(product5);
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        FixPriceProduct product2 = new FixPriceProduct("Масло");
+
+
+        try {
+            FixPriceProduct product2 = new FixPriceProduct("Масло");
+            basket.addProduct(product2);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        System.out.println(basket.deleteProductByTitle("Хлеб"));
+        basket.printBasket();
+        System.out.println(basket.deleteProductByTitle("Гречка"));
+        basket.printBasket();
+
 
         //Создаем статьи
         Article coffeeArticle = new Article(
@@ -75,20 +89,8 @@ public class Main {
         search.add(breadArticle);
         search.add(phoneArticle);
 
-        //Проверка поиска с вхождениями
-        try {
-            System.out.println(search.findBestMatch("на"));
-        } catch (BestResultNotFound e){
-            System.out.println(e.getMessage());
-        }
 
-        //Проверка поиска без вхождений
-        try {
-            System.out.println(search.findBestMatch("bob"));
-        } catch (BestResultNotFound e){
-            System.out.println(e.getMessage());
-        }
-
+        System.out.println(search.search("на"));
     }
 
 }
