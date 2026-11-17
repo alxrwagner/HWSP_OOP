@@ -1,5 +1,7 @@
 package org.skypro.skyshop.product;
 
+import org.skypro.skyshop.exceptions.IllegalPriceException;
+
 public class SimpleProduct extends Product {
 
     private int cost;
