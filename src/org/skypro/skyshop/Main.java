@@ -49,13 +49,6 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-
-        System.out.println(basket.deleteProductByTitle("Хлеб"));
-        basket.printBasket();
-        System.out.println(basket.deleteProductByTitle("Гречка"));
-        basket.printBasket();
-
-
         //Создаем статьи
         Article coffeeArticle = new Article(
                 "Как выбрать зерновой кофе",
@@ -82,6 +75,11 @@ public class Main {
                 "Флагманские модели позволяют делать отличные снимки даже в темноте."
         );
 
+        System.out.println(basket.deleteProductByTitle("Хлеб"));
+        basket.printBasket();
+        System.out.println(basket.deleteProductByTitle("Гречка"));
+        basket.printBasket();
+
         //Добавляем статьи в поисковую систему
         search.add(coffeeArticle);
         search.add(teaArticle);
@@ -90,7 +88,8 @@ public class Main {
         search.add(phoneArticle);
 
 
-        System.out.println(search.search("на"));
+       // System.out.println(search.search("на"));
+        search.search("на").values().forEach((System.out::println));
     }
 
 }

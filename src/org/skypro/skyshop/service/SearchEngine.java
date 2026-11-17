@@ -2,8 +2,7 @@ package org.skypro.skyshop.service;
 
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine {
     private List<Searchable> searchables;
@@ -12,15 +11,14 @@ public class SearchEngine {
         this.searchables = new ArrayList<>();
     }
 
-    public List<Searchable> search(String text){
-        List<Searchable> result = new ArrayList<>();
+    public Map<String, Searchable> search(String text){
+        Map<String, Searchable> result = new TreeMap<>();
 
         for (Searchable obj : searchables) {
             if (obj != null && obj.getSearchTerm().contains(text)) {
-                result.add(obj);
+                result.put(obj.getTitle(), obj);
             }
         }
-
         return result;
     }
 
